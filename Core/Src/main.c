@@ -65,7 +65,7 @@ float error_p;
 
 // HUART
 char text[10];
-char input[4] = "";
+char input[] = "S000"; // {'S', '0', '0', '0', 0 };
 
 char text1[20];
 char text2[20];
@@ -120,13 +120,7 @@ void HAL_UART_RxCpltCallback (UART_HandleTypeDef * huart)
 	char idx =input[0];
 
 	if(idx=='S'){
-
-		v1 = (int)(input[1]-'0');
-		v2 = (int)(input[2]-'0');
-		v3 = (int)(input[3]-'0');
-		new_set = v1*100+v2*10+v3;
-		set_point=new_set;
-
+		set_point = atoi(&input[1]);
 		HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
 	}
 	 if(idx == 'g'){
@@ -171,7 +165,7 @@ void HAL_TIM_PeriodElapsedCallback (TIM_HandleTypeDef *htim){
 		// PI Controll
 
 		//Integral, prev_Integral;
-		I = prev_Integral+error+prev_error;
+		I = prev_Integral + error + prev_error;
 		pwm_i=I*ki;
 
 		prev_Integral=I;
